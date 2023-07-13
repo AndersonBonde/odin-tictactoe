@@ -60,6 +60,7 @@ const gameBoard = (() => {
 
 const game = (() => {
     let round = 1;
+    let victor = undefined;
 
     const player1 = Player("X");
     const player2 = Player("O");
@@ -69,8 +70,10 @@ const game = (() => {
     };
     const getRound = () => round;
     const incrementRound = () => {
-        round++;
         checkWinner();
+        round++;
+
+        console.log(round);
     }
 
     function checkWinner() {
@@ -93,9 +96,21 @@ const game = (() => {
             let firstElement = curr[0];
             
             if(curr.every(curr => curr == firstElement && curr != null)) {
+                victor = getPlayer();
+
+                console.log(`Victor is: ${victor.getToken()}`);
+
                 return true;
             }
         })
+
+        if(round >= 10 && victor == undefined) {
+            draw();
+        }
+    }
+
+    function draw() {
+        console.log("Game was drawn");
     }
 
     return {
