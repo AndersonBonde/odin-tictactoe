@@ -20,10 +20,16 @@ h1 {
     background-color: #ccc;
 }
 
+table {
+    border: 2px solid black;
+    border-collapse: collapse;
+}
+
 td {
     width: 200px;
     height: 200px;
     text-align: center;
     font-weight: bold;
     font-size: 100px;
+    border: 2px solid black;
 }
