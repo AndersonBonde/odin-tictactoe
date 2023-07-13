@@ -4,3 +4,26 @@
     padding: 0;
 }
 
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    margin-top: 16px;
+    text-align: center;
+}
+
+.table-container {
+    width: 600px;
+    height: 600px;
+    margin: 16px auto;
+    background-color: #ccc;
+}
+
+td {
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 100px;
+}
