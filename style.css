@@ -37,7 +37,11 @@ h1 {
 
 .player-names-container {
     display: none;
+    width: 600px;
     margin-top: 25vh;
+    margin-inline: auto;
+    border: 1px solid #bbb;
+    border-radius: 12px;
 }
 
 .player-names {
@@ -101,4 +105,37 @@ td {
     font-size: 100px;
     border: 12px solid whitesmoke;
     overflow: hidden;
+}
+
+.display-names {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    font-size: 2rem;
+}
+
+.display-names span {
+    padding: 16px 20px;
+    border-radius: 8px;
+}   
+
+.winner {
+    background-color: rgb(141, 223, 19);
+    font-weight: bold;
+    transition: .3s ease-in-out;
+}
+
+.reset-button {
+    padding: 4px 16px;
+    font-size: 3rem;
+    background-color: lightskyblue;
+    border: none;
+    border-radius: 50%;
+}
+
+.reset-button:hover {
+    cursor: pointer;
+    outline: 2px solid black;
+    transform: rotate(-180deg);
+    transition: .35s ease-in-out;
 }

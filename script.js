@@ -78,8 +78,6 @@ const game = (() => {
         round++;
     }
 
-
-
     function checkWinner() {
         let board = gameBoard.board;
 
@@ -101,6 +99,7 @@ const game = (() => {
             
             if(curr.every(curr => curr == firstElement && curr != null)) {
                 victor = displayController.getPlayerName().getName();
+                displayController.highlightWinner(victor);
                 console.log(`The victor is: ${victor}`);
 
                 return true;
@@ -129,24 +128,41 @@ const displayController = (() => {
     let startButton = document.querySelector(".start-button");
     let playerNamesContainer = document.querySelector(".player-names-container");
     let tableContainer = document.querySelector(".table-container");
-
+    let player1DisplayName = document.querySelector(".player1-display");
+    let player2DisplayName = document.querySelector(".player2-display");
+    
     playButton.addEventListener("click", askPlayerNames);
     startButton.addEventListener("click", startGame);
-
+    
     function askPlayerNames() {
         playButton.style.display = "none";
         playerNamesContainer.style.display = "block";
     }
-
+    
     function startGame() {
         let player1Field = document.querySelector("#player1");
         let player2Field = document.querySelector("#player2");
 
-        game.player1 = Player(player1Field.value, "X");
-        game.player2 = Player(player2Field.value, "O");
+        game.player1 = Player(player1Field.value == "" ? "Player 1" : player1Field.value, "X");
+        game.player2 = Player(player2Field.value == "" ? "Player 2" : player2Field.value, "O");
+
+        displayNames();
 
         playerNamesContainer.style.display = "none";
         tableContainer.style.display = "block";
+    }
+
+    function displayNames() {
+        player1DisplayName.textContent = `${game.player1.getName()} - X`;
+        player1DisplayName.dataset.name = game.player1.getName();
+
+        player2DisplayName.textContent = `O - ${game.player2.getName()}`;
+        player2DisplayName.dataset.name = game.player2.getName();
+    }
+
+    function highlightWinner(winnerName) {
+        let target = document.querySelector(`span[data-name=${winnerName}]`);
+        target.classList.add("winner");
     }
 
     function getPlayerName() {
@@ -157,6 +173,7 @@ const displayController = (() => {
     }
 
     return {
-        getPlayerName
+        getPlayerName,
+        highlightWinner
     }
 })();
