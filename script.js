@@ -1,15 +1,18 @@
-const Player = (token) => {
+const Player = (name, token) => {
     const getToken = () => token;
+    const getName = () => name;
 
     return {
-        getToken
+        getToken,
+        getName
     }
 };
 
 const gameBoard = (() => {
-    let board = [];
+    let board = buildBoard();
 
-    (function buildBoard() {
+    function buildBoard() {
+        let board = [];
         let table = document.querySelector("table");
         
         for(let i = 0; i < 3; i++) {
@@ -23,14 +26,16 @@ const gameBoard = (() => {
                 tableData.dataset.x = i;
                 tableData.dataset.y = j;
 
-                appendListener(tableData);
+                addListeners(tableData);
 
                 tableRow.appendChild(tableData);
             }
         }
-    })();
 
-    function appendListener(target) {
+        return board;
+    };
+
+    function addListeners(target) {
         target.addEventListener("click", placeMarker);
     }
 
@@ -62,8 +67,8 @@ const game = (() => {
     let round = 1;
     let victor = undefined;
 
-    const player1 = Player("X");
-    const player2 = Player("O");
+    const player1 = Player("Player1", "X");
+    const player2 = Player("Player2", "O");
 
     const getPlayer = () => {
         return (round % 2) ? player1 : player2; 
@@ -72,8 +77,6 @@ const game = (() => {
     const incrementRound = () => {
         checkWinner();
         round++;
-
-        console.log(round);
     }
 
     function checkWinner() {
@@ -98,7 +101,7 @@ const game = (() => {
             if(curr.every(curr => curr == firstElement && curr != null)) {
                 victor = getPlayer();
 
-                console.log(`Victor is: ${victor.getToken()}`);
+                console.log(`Victor is: ${victor.getName()}`);
 
                 return true;
             }
@@ -117,5 +120,22 @@ const game = (() => {
         getPlayer,
         getRound,
         incrementRound
+    }
+})();
+
+const displayController = (() => {
+    (function init() {
+        let playButton;
+
+        cacheValues();
+        addListeners();
+    })();
+
+    function cacheValues() {
+        playButton = document.querySelector(".play-button");
+    }
+    
+    function addListeners() {
+        playButton.addEventListener("click", () => {console.log("Play button working.")})
     }
 })();

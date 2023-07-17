@@ -6,12 +6,52 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
+    background-color: whitesmoke;
 }
 
 h1 {
-    margin-top: 16px;
+    margin-top: 2rem;
+    font-size: 3.35rem;
     text-align: center;
 }
+
+/* Initial screen - player names input */
+
+.play-button {
+    display: block;
+    background-color: rgb(141, 223, 19);
+    border: none;
+    border-radius: 6px;
+    padding: 16px 40px;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 4rem auto;
+}
+
+.play-button:hover {
+    cursor: pointer;
+    outline: 2px solid black;
+    color: black;
+}
+
+.player-names {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    margin: 1rem auto;
+}
+
+.player-names label {
+    margin-block: .5rem;
+    font-size: 1rem;
+}
+
+.player-names input {
+    padding: 4px;
+}
+
+/* Board container */
 
 .table-container {
     width: 600px;
