@@ -1,10 +1,12 @@
 const Player = (name, token) => {
+    let playerName = name;
+
+    const getName = () => playerName;
     const getToken = () => token;
-    const getName = () => name;
 
     return {
-        getToken,
-        getName
+        getName,
+        getToken
     }
 };
 
@@ -41,7 +43,7 @@ const gameBoard = (() => {
 
     function placeMarker(event) {
         let data = event.target.dataset;
-        let player = game.getPlayer();
+        let player = displayController.getPlayerName();
 
         if(isEmpty(data.x, data.y, player)) {
             event.target.textContent = player.getToken();
@@ -67,17 +69,16 @@ const game = (() => {
     let round = 1;
     let victor = undefined;
 
-    const player1 = Player("Player1", "X");
-    const player2 = Player("Player2", "O");
+    let player1 = Player("Player 1", "X");
+    let player2 = Player("Player 2", "O");
 
-    const getPlayer = () => {
-        return (round % 2) ? player1 : player2; 
-    };
     const getRound = () => round;
     const incrementRound = () => {
         checkWinner();
         round++;
     }
+
+
 
     function checkWinner() {
         let board = gameBoard.board;
@@ -92,21 +93,20 @@ const game = (() => {
 
         let decrease = [board[0][0], board[1][1], board[2][2]];
         let increase = [board[2][0], board[1][1], board[0][2]];
-
+        
         let victoryCondition = [firstRow, secondRow, thirdRow, firstColumn, secondColumn, thirdColumn, decrease, increase];
-
+        
         victoryCondition.forEach(curr => {
             let firstElement = curr[0];
             
             if(curr.every(curr => curr == firstElement && curr != null)) {
-                victor = getPlayer();
-
-                console.log(`Victor is: ${victor.getName()}`);
+                victor = displayController.getPlayerName().getName();
+                console.log(`The victor is: ${victor}`);
 
                 return true;
             }
         })
-
+        
         if(round >= 10 && victor == undefined) {
             draw();
         }
@@ -115,27 +115,48 @@ const game = (() => {
     function draw() {
         console.log("Game was drawn");
     }
-
+    
     return {
-        getPlayer,
-        getRound,
-        incrementRound
+        player1,
+        player2,
+        incrementRound,
+        getRound
     }
 })();
 
 const displayController = (() => {
-    (function init() {
-        let playButton;
+    let playButton = document.querySelector(".play-button");
+    let startButton = document.querySelector(".start-button");
+    let playerNamesContainer = document.querySelector(".player-names-container");
+    let tableContainer = document.querySelector(".table-container");
 
-        cacheValues();
-        addListeners();
-    })();
+    playButton.addEventListener("click", askPlayerNames);
+    startButton.addEventListener("click", startGame);
 
-    function cacheValues() {
-        playButton = document.querySelector(".play-button");
+    function askPlayerNames() {
+        playButton.style.display = "none";
+        playerNamesContainer.style.display = "block";
     }
-    
-    function addListeners() {
-        playButton.addEventListener("click", () => {console.log("Play button working.")})
+
+    function startGame() {
+        let player1Field = document.querySelector("#player1");
+        let player2Field = document.querySelector("#player2");
+
+        game.player1 = Player(player1Field.value, "X");
+        game.player2 = Player(player2Field.value, "O");
+
+        playerNamesContainer.style.display = "none";
+        tableContainer.style.display = "block";
+    }
+
+    function getPlayerName() {
+        let round = game.getRound();
+        let victor = (round % 2) ? game.player1 : game.player2;
+
+        return victor;
+    }
+
+    return {
+        getPlayerName
     }
 })();

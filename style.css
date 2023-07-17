@@ -23,10 +23,10 @@ h1 {
     border: none;
     border-radius: 6px;
     padding: 16px 40px;
-    color: white;
+    color: black;
     font-size: 2rem;
     font-weight: bold;
-    margin: 4rem auto;
+    margin: 30vh auto;
 }
 
 .play-button:hover {
@@ -35,11 +35,16 @@ h1 {
     color: black;
 }
 
+.player-names-container {
+    display: none;
+    margin-top: 25vh;
+}
+
 .player-names {
     width: 400px;
     display: flex;
     flex-direction: column;
-    margin: 1rem auto;
+    margin: 2rem auto;
 }
 
 .player-names label {
@@ -51,17 +56,40 @@ h1 {
     padding: 4px;
 }
 
+.player-names p {
+    margin-top: 4px;
+    color: #777777;
+}
+
+.start-button {
+    margin-top: 2rem;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    background-color: rgb(141, 223, 19);
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.start-button:hover {
+    cursor: pointer;
+    outline: 2px solid black;
+}
+
 /* Board container */
 
 .table-container {
     width: 600px;
     height: 600px;
-    margin: 16px auto;
-    background-color: #ccc;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ddd;
+    display: none;
 }
 
 table {
-    border: 2px solid black;
     border-collapse: collapse;
 }
 
@@ -71,5 +99,6 @@ td {
     text-align: center;
     font-weight: bold;
     font-size: 100px;
-    border: 2px solid black;
+    border: 12px solid whitesmoke;
+    overflow: hidden;
 }
