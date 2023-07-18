@@ -136,9 +136,11 @@ const displayController = (() => {
     let tableContainer = document.querySelector(".table-container");
     let player1DisplayName = document.querySelector(".player1-display");
     let player2DisplayName = document.querySelector(".player2-display");
+    let resetButton = document.querySelector(".reset-button");
     
     playButton.addEventListener("click", askPlayerNames);
     startButton.addEventListener("click", startGame);
+    resetButton.addEventListener("click", resetPage);
     
     function askPlayerNames() {
         playButton.style.display = "none";
@@ -168,6 +170,10 @@ const displayController = (() => {
 
         player2DisplayName.textContent = `${game.player2.getName()}`;
         player2DisplayName.dataset.name = game.player2.getName();
+    }
+
+    function resetPage() {
+        location.reload();
     }
 
     function highlightCurrentTurn() {
