@@ -119,6 +119,10 @@ td {
     border-radius: 8px;
 }   
 
+.turn {
+    outline: 2px solid lightskyblue;
+}
+
 .winner {
     background-color: rgb(141, 223, 19);
     font-weight: bold;

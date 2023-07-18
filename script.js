@@ -43,18 +43,18 @@ const gameBoard = (() => {
 
     function placeMarker(event) {
         let data = event.target.dataset;
-        let player = displayController.getPlayerName();
+        let player = displayController.getCurrentPlayer();
 
         if(isEmpty(data.x, data.y, player)) {
             event.target.textContent = player.getToken();
             game.incrementRound();
         } else {
-            console.log("Place already taken");
+            console.log("Place already taken or game's over.");
         }
     }
 
     function isEmpty(x, y, player) {
-        if(board[x][y] == null) {
+        if(board[x][y] == null && game.getVictor() == undefined) {
             board[x][y] = player.getToken();
             return true;
         }
@@ -73,9 +73,13 @@ const game = (() => {
     let player2 = Player("Player 2", "O");
 
     const getRound = () => round;
+    const getVictor = () => victor;
+
     const incrementRound = () => {
         checkWinner();
         round++;
+
+        if(!victor) displayController.highlightCurrentTurn();
     }
 
     function checkWinner() {
@@ -98,9 +102,10 @@ const game = (() => {
             let firstElement = curr[0];
             
             if(curr.every(curr => curr == firstElement && curr != null)) {
-                victor = displayController.getPlayerName().getName();
+                victor = displayController.getCurrentPlayer().getName();
+                
                 displayController.highlightWinner(victor);
-                console.log(`The victor is: ${victor}`);
+                displayController.removeTurnHighlight();
 
                 return true;
             }
@@ -118,6 +123,7 @@ const game = (() => {
     return {
         player1,
         player2,
+        getVictor,
         incrementRound,
         getRound
     }
@@ -143,8 +149,8 @@ const displayController = (() => {
         let player1Field = document.querySelector("#player1");
         let player2Field = document.querySelector("#player2");
 
-        game.player1 = Player(player1Field.value == "" ? "Player 1" : player1Field.value, "X");
-        game.player2 = Player(player2Field.value == "" ? "Player 2" : player2Field.value, "O");
+        game.player1 = Player(player1Field.value == "" ? "Player_1" : trimNameSpaces(player1Field.value), "X");
+        game.player2 = Player(player2Field.value == "" ? "Player_2" : trimNameSpaces(player2Field.value), "O");
 
         displayNames();
 
@@ -152,12 +158,34 @@ const displayController = (() => {
         tableContainer.style.display = "block";
     }
 
+    function trimNameSpaces(name) {
+        return name.replace(/ /g, "");
+    }
+
     function displayNames() {
-        player1DisplayName.textContent = `${game.player1.getName()} - X`;
+        player1DisplayName.textContent = `${game.player1.getName()}`;
         player1DisplayName.dataset.name = game.player1.getName();
 
-        player2DisplayName.textContent = `O - ${game.player2.getName()}`;
+        player2DisplayName.textContent = `${game.player2.getName()}`;
         player2DisplayName.dataset.name = game.player2.getName();
+    }
+
+    function highlightCurrentTurn() {
+        let turn = game.getRound();
+
+        removeTurnHighlight();
+
+        if(turn % 2 == 1) {
+            player1DisplayName.classList.add("turn");
+        } else {
+            player2DisplayName.classList.add("turn");
+        }
+    }
+    highlightCurrentTurn();
+
+    function removeTurnHighlight() {
+        player1DisplayName.classList.remove("turn");
+        player2DisplayName.classList.remove("turn");
     }
 
     function highlightWinner(winnerName) {
@@ -165,7 +193,7 @@ const displayController = (() => {
         target.classList.add("winner");
     }
 
-    function getPlayerName() {
+    function getCurrentPlayer() {
         let round = game.getRound();
         let victor = (round % 2) ? game.player1 : game.player2;
 
@@ -173,7 +201,9 @@ const displayController = (() => {
     }
 
     return {
-        getPlayerName,
-        highlightWinner
+        getCurrentPlayer,
+        highlightWinner,
+        highlightCurrentTurn,
+        removeTurnHighlight
     }
 })();
